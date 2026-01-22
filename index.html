@@ -32,6 +32,10 @@
               'Arial',
               'sans-serif'
             ]
+          },
+          boxShadow: {
+            'ultra-light': '0 2px 8px rgba(0, 0, 0, 0.03)',
+            'product': '0 10px 25px rgba(0, 0, 0, 0.05)'
           }
         }
       }
@@ -41,51 +45,42 @@
   <style type="text/tailwindcss">
     @layer utilities {
       .apple-btn {
-        @apply inline-flex items-center justify-center px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 mx-3;
+        @apply inline-flex items-center justify-center px-7 py-3 rounded-2xl text-base font-medium transition-all duration-300 mx-2.5 shadow-ultra-light;
       }
       .apple-btn-primary {
-        @apply bg-apple-blue text-white hover:bg-apple-blue/90;
+        @apply bg-apple-blue text-white hover:bg-apple-blue/90 hover:shadow-md;
       }
       .apple-btn-secondary {
-        @apply text-apple-blue border border-apple-blue/40 hover:bg-apple-blue/5;
+        @apply text-apple-blue border border-apple-blue/30 hover:bg-apple-blue/5 hover:shadow-md;
       }
       .nav-link-active {
         color: #0066cc !important;
         font-weight: 500;
       }
-      /* 核心优化：提升背景图片清晰度 */
-      .apple-bg-section {
-        @apply bg-apple-bg bg-cover bg-center bg-no-repeat relative;
-        min-height: 60vh !important;
-        width: 100% !important;
-        background-attachment: scroll !important;
-        /* 关键：优化图片渲染质量 */
-        background-size: cover !important;
-        background-position: center center !important;
-        background-repeat: no-repeat !important;
-        /* 提升图片清晰度的核心样式 */
-        image-rendering: -webkit-optimize-contrast !important; /* 针对webkit内核（Chrome/Safari）优化 */
-        image-rendering: crisp-edges !important; /* 保留图片边缘细节 */
-        image-rendering: pixelated !important; /* 像素级清晰渲染 */
-        -webkit-background-size: cover !important; /* 兼容iOS设备 */
-        -webkit-backface-visibility: hidden !important; /* 消除iOS模糊 */
+      /* 核心板块样式：浅灰背景+极简留白 */
+      .core-section {
+        @apply w-full bg-apple-bg py-16 md:py-24 px-6 relative;
       }
-      .apple-product-wrap {
-        max-width: 900px;
-        margin: 0 auto;
-        width: 100%;
-        padding: 0 20px;
+      /* 内容容器：居中+固定宽度+极简留白 */
+      .content-container {
+        @apply max-w-5xl mx-auto text-center;
       }
-      .apple-product-img {
-        width: 100%;
-        height: auto;
-        object-fit: contain;
-        max-height: 60vh;
+      /* 产品图片容器：按钮下方+高质感+极淡投影 */
+      .product-img-wrap {
+        @apply mt-12 max-w-4xl mx-auto px-4;
+      }
+      /* 移除白色外壳容器，简化图片样式 */
+      .product-img {
+        @apply w-full h-auto object-contain max-h-[60vh] mx-auto;
+      }
+      /* 图片样式优化 */
+      .product-img-inner {
+        @apply w-full h-auto object-contain max-h-[60vh] mx-auto rounded-xl shadow-product;
       }
       .team-card {
-        @apply bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all;
+        @apply bg-white rounded-xl shadow-ultra-light overflow-hidden hover:shadow-md transition-all;
       }
-      /* 新增：高清图片渲染工具类 */
+      /* 高清图片渲染 */
       .image-high-def {
         image-rendering: optimizeQuality;
         -webkit-filter: blur(0);
@@ -93,67 +88,34 @@
       }
     }
 
-    /* 全局优化：提升所有图片清晰度 */
+    /* 全局样式 */
     body {
       font-family: var(--font-sanfrancisco);
       scroll-behavior: smooth;
       padding-top: 56px;
       margin: 0;
-      image-rendering: optimizeQuality; /* 全局图片高清渲染 */
-      -webkit-font-smoothing: antialiased; /* 文字抗锯齿，间接提升视觉清晰度 */
-    }
-
-    /* 移动端背景优化：保证高度和清晰度 */
-    @media (max-width: 768px) {
-      .apple-bg-section {
-        min-height: 70vh !important; /* 增加移动端高度，完整显示背景 */
-        padding: 40px 0 !important;
-        background-size: auto 100% !important; /* 移动端优先保证高度铺满，避免拉伸模糊 */
-      }
-      .team-grid {
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)) !important;
-      }
-    }
-
-    /* 大屏设备优化：最大化利用分辨率 */
-    @media (min-width: 1200px) {
-      .apple-bg-section {
-        min-height: 80vh !important;
-        background-size: 100% auto !important; /* 大屏优先宽度铺满，保证细节清晰 */
-      }
+      -webkit-font-smoothing: antialiased;
+      background-color: #ffffff;
     }
 
     #mobile-menu {
       transition: all 0.3s ease;
     }
 
-    /* 背景图片加载失败备用样式（不影响清晰度） */
-    .apple-bg-section::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(245, 245, 247, 0.8);
-      z-index: 1;
-      opacity: 0; /* 图片加载成功时隐藏 */
-      transition: opacity 0.3s ease;
+    /* 导航栏优化 */
+    nav {
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
     }
-    .apple-bg-section.bg-loaded::before {
-      opacity: 0;
-    }
-    .apple-bg-section > * {
-      position: relative;
-      z-index: 2;
-    }
+
+    /* 移除渐变边框相关样式 */
   </style>
 </head>
 
 <body class="font-sanfrancisco">
 
 <!-- ================= 导航栏 ================= -->
-<nav class="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md text-white">
+<nav class="fixed top-0 left-0 right-0 z-50 bg-black/80 text-white">
   <div class="max-w-7xl mx-auto px-4">
     <div class="flex justify-between items-center h-14">
       <a href="index.html" class="text-lg font-medium">专业定制铝制啤酒罐制造商</a>
@@ -180,19 +142,18 @@
   </div>
 </nav>
 
-<!-- ================= 首页 Hero ================= -->
-<section id="home" class="relative flex flex-col items-center justify-center text-center pt-20 apple-bg-section image-high-def"
-  style="background-image: url('https://i.ibb.co/rG1KcvtM/266.png');"
->
-  <div class="relative z-10 max-w-5xl mx-auto px-6 mb-8">
-    <h1 class="text-5xl md:text-6xl font-semibold tracking-tight text-apple-dark mb-4">
+<!-- ================= 首页 Hero（移除白色外壳） ================= -->
+<section id="home" class="core-section">
+  <div class="content-container">
+    <h1 class="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-apple-dark mb-6">
       高品质定制铝制啤酒罐
     </h1>
-    <p class="text-xl md:text-2xl text-apple-light mb-8">
+    <p class="text-xl md:text-2xl text-apple-light mb-10 max-w-3xl mx-auto">
       新一代定制铝制啤酒罐，为品牌而生。
     </p>
 
-    <div class="flex flex-row flex-wrap justify-center">
+    <!-- 圆角按钮组 -->
+    <div class="flex flex-row flex-wrap justify-center mb-4">
       <a href="learn-more.html" class="apple-btn apple-btn-primary">
         进一步了解
       </a>
@@ -200,51 +161,67 @@
         选购铝制啤酒罐
       </a>
     </div>
-  </div>
-</section>
 
-<!-- ================= 进一步了解 ================= -->
-<section id="learn-more" class="flex flex-col items-center justify-center text-center py-20 apple-bg-section image-high-def"
-  style="background-image: url('https://i.ibb.co/k2GkT07F/169.png');"
->
-  <div class="max-w-4xl mx-auto px-6 mb-12 relative z-10">
-    <h2 class="text-4xl md:text-5xl font-semibold text-apple-dark mb-4">
-      系列定制
-    </h2>
-    <p class="text-lg md:text-xl text-apple-light mb-8">
-      用包装定义品牌，让每一款都独一无二。
-    </p>
-
-    <div class="flex flex-row flex-wrap justify-center">
-      <a href="learn-more.html" class="apple-btn apple-btn-primary">进一步了解</a>
-      <a href="custom-order.html" class="apple-btn apple-btn-secondary">查看案例</a>
+    <!-- 按钮下方的产品图片区域（无白色外壳） -->
+    <div class="product-img-wrap">
+      <img src="https://i.ibb.co/4RXdbG3K/4.png" alt="高品质定制铝制啤酒罐" class="product-img image-high-def">
     </div>
   </div>
 </section>
 
-<!-- ================= 选购铝制啤酒罐 ================= -->
-<section id="custom-order" class="pt-32 pb-20 apple-bg-section image-high-def"
-  style="background-image: url('https://i.ibb.co/nqcShHrw/618.png');"
->
-  <div class="max-w-7xl mx-auto px-4 text-center relative z-10">
-    <h2 class="text-4xl font-bold mb-16 text-apple-dark">选购铝制啤酒罐</h2>
-    <p class="text-xl text-apple-light mb-10">定制您的专属铝制啤酒罐，联系我们获取详细方案</p>
-    <a href="custom-order.html" class="apple-btn apple-btn-primary">立即定制</a>
+<!-- ================= 进一步了解/系列定制（移除白色外壳） ================= -->
+<section id="learn-more" class="core-section">
+  <div class="content-container">
+    <h2 class="text-3xl md:text-4xl lg:text-5xl font-semibold text-apple-dark mb-6">
+      系列定制
+    </h2>
+    <p class="text-lg md:text-xl text-apple-light mb-10 max-w-3xl mx-auto">
+      用包装定义品牌，让每一款都独一无二。
+    </p>
+
+    <!-- 圆角按钮组 -->
+    <div class="flex flex-row flex-wrap justify-center mb-4">
+      <a href="learn-more.html" class="apple-btn apple-btn-primary">进一步了解</a>
+      <a href="custom-order.html" class="apple-btn apple-btn-secondary">查看案例</a>
+    </div>
+
+    <!-- 按钮下方的产品图片区域（无白色外壳） -->
+    <div class="product-img-wrap">
+      <img src="https://i.ibb.co/Zp9F7nBv/20.png" alt="系列定制铝制啤酒罐" class="product-img image-high-def">
+    </div>
+  </div>
+</section>
+
+<!-- ================= 选购铝制啤酒罐（移除白色外壳） ================= -->
+<section id="custom-order" class="core-section">
+  <div class="content-container">
+    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-apple-dark">选购铝制啤酒罐</h2>
+    <p class="text-xl text-apple-light mb-10 max-w-3xl mx-auto">定制您的专属铝制啤酒罐，联系我们获取详细方案</p>
+
+    <!-- 圆角按钮 -->
+    <div class="flex flex-row flex-wrap justify-center mb-4">
+      <a href="custom-order.html" class="apple-btn apple-btn-primary">立即定制</a>
+    </div>
+
+    <!-- 按钮下方的产品图片区域（无白色外壳） -->
+    <div class="product-img-wrap">
+      <img src="https://i.ibb.co/DDwkC5dS/35.png" alt="选购铝制啤酒罐" class="product-img image-high-def">
+    </div>
   </div>
 </section>
 
 <!-- ================= 我们的团队板块 ================= -->
-<section id="our-team" class="pt-32 pb-20 bg-apple-bg">
-  <div class="max-w-7xl mx-auto px-4">
-    <h2 class="text-4xl font-bold text-center mb-16 text-apple-dark">专业的团队 打造卓越的产品</h2>
+<section id="our-team" class="pt-24 pb-20 bg-white">
+  <div class="max-w-7xl mx-auto px-6">
+    <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 text-apple-dark">专业的团队 打造卓越的产品</h2>
 
-    <div class="grid team-grid grid-cols-1 md:grid-cols-4 gap-4 px-2">
+    <div class="grid team-grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-4">
       <!-- 张伟 - 首席工程师 -->
       <div class="team-card">
         <img src="https://picsum.photos/400/500?engineer" alt="张伟" class="w-full h-48 object-cover image-high-def">
-        <div class="p-3 text-center">
-          <h3 class="text-sm font-bold mb-1">张伟</h3>
-          <p class="text-xs text-apple-light mb-2">首席工程师</p>
+        <div class="p-4 text-center">
+          <h3 class="text-base font-bold mb-1">张伟</h3>
+          <p class="text-sm text-apple-light mb-2">首席工程师</p>
           <p class="text-xs text-gray-600">15年铝制包装研发经验</p>
         </div>
       </div>
@@ -252,9 +229,9 @@
       <!-- 李娜 - 市场营销经理 -->
       <div class="team-card">
         <img src="https://picsum.photos/400/500?marketing" alt="李娜" class="w-full h-48 object-cover image-high-def">
-        <div class="p-3 text-center">
-          <h3 class="text-sm font-bold mb-1">李娜</h3>
-          <p class="text-xs text-apple-light mb-2">市场营销经理</p>
+        <div class="p-4 text-center">
+          <h3 class="text-base font-bold mb-1">李娜</h3>
+          <p class="text-sm text-apple-light mb-2">市场营销经理</p>
           <p class="text-xs text-gray-600">8年快消品营销经验</p>
         </div>
       </div>
@@ -262,9 +239,9 @@
       <!-- 王强 - 生产经理 -->
       <div class="team-card">
         <img src="https://picsum.photos/400/500?production" alt="王强" class="w-full h-48 object-cover image-high-def">
-        <div class="p-3 text-center">
-          <h3 class="text-sm font-bold mb-1">王强</h3>
-          <p class="text-xs text-apple-light mb-2">生产经理</p>
+        <div class="p-4 text-center">
+          <h3 class="text-base font-bold mb-1">王强</h3>
+          <p class="text-sm text-apple-light mb-2">生产经理</p>
           <p class="text-xs text-gray-600">20年生产管理经验</p>
         </div>
       </div>
@@ -272,31 +249,31 @@
       <!-- 赵敏 - 客户服务专员 -->
       <div class="team-card">
         <img src="https://picsum.photos/400/500?service" alt="赵敏" class="w-full h-48 object-cover image-high-def">
-        <div class="p-3 text-center">
-          <h3 class="text-sm font-bold mb-1">赵敏</h3>
-          <p class="text-xs text-apple-light mb-2">客户服务专员</p>
+        <div class="p-4 text-center">
+          <h3 class="text-base font-bold mb-1">赵敏</h3>
+          <p class="text-sm text-apple-light mb-2">客户服务专员</p>
           <p class="text-xs text-gray-600">5年定制服务经验</p>
         </div>
       </div>
     </div>
 
     <!-- 团队优势 -->
-    <div class="mt-12 bg-white rounded-xl shadow-xl p-6">
-      <h3 class="text-xl font-semibold mb-4 text-center text-apple-dark">我们的核心优势</h3>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+    <div class="mt-16 bg-apple-bg rounded-2xl shadow-ultra-light p-8 max-w-5xl mx-auto">
+      <h3 class="text-xl font-semibold mb-6 text-center text-apple-dark">我们的核心优势</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
         <div>
-          <i class="fa fa-users text-3xl text-apple-blue mb-3"></i>
-          <h4 class="text-lg font-semibold mb-1">专业团队</h4>
+          <i class="fa fa-users text-3xl text-apple-blue mb-4"></i>
+          <h4 class="text-lg font-semibold mb-2">专业团队</h4>
           <p class="text-sm text-apple-light">平均10年以上行业经验</p>
         </div>
         <div>
-          <i class="fa fa-cogs text-3xl text-apple-blue mb-3"></i>
-          <h4 class="text-lg font-semibold mb-1">先进工艺</h4>
+          <i class="fa fa-cogs text-3xl text-apple-blue mb-4"></i>
+          <h4 class="text-lg font-semibold mb-2">先进工艺</h4>
           <p class="text-sm text-apple-light">引进国际领先生产设备</p>
         </div>
         <div>
-          <i class="fa fa-heart text-3xl text-apple-blue mb-3"></i>
-          <h4 class="text-lg font-semibold mb-1">贴心服务</h4>
+          <i class="fa fa-heart text-3xl text-apple-blue mb-4"></i>
+          <h4 class="text-lg font-semibold mb-2">贴心服务</h4>
           <p class="text-sm text-apple-light">一对一专属定制服务</p>
         </div>
       </div>
@@ -305,13 +282,13 @@
 </section>
 
 <!-- ================= 联系我们板块 ================= -->
-<section id="contact" class="pt-32 pb-20 bg-apple-bg">
-  <div class="max-w-7xl mx-auto px-4">
-    <h2 class="text-4xl font-bold text-center mb-16 text-apple-dark">联系我们</h2>
+<section id="contact" class="pt-24 pb-20 bg-apple-bg">
+  <div class="max-w-7xl mx-auto px-6">
+    <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 text-apple-dark">联系我们</h2>
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 max-w-5xl mx-auto">
       <!-- 联系信息 -->
-      <div class="bg-white rounded-xl shadow-xl p-8">
+      <div class="bg-white rounded-2xl shadow-ultra-light p-8">
         <h3 class="text-2xl font-semibold mb-8 text-apple-dark">联系方式</h3>
 
         <div class="space-y-6">
@@ -366,31 +343,31 @@
       </div>
 
       <!-- 联系表单 -->
-      <div class="bg-white rounded-xl shadow-xl p-8">
+      <div class="bg-white rounded-2xl shadow-ultra-light p-8">
         <h3 class="text-2xl font-semibold mb-8 text-apple-dark">发送消息</h3>
 
         <form id="contact-form" class="space-y-6">
           <div>
             <label class="block text-apple-dark font-medium mb-2">姓名 *</label>
-            <input type="text" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-apple-blue">
+            <input type="text" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-apple-blue shadow-ultra-light">
           </div>
 
           <div>
             <label class="block text-apple-dark font-medium mb-2">电话 *</label>
-            <input type="tel" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-apple-blue">
+            <input type="tel" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-apple-blue shadow-ultra-light">
           </div>
 
           <div>
             <label class="block text-apple-dark font-medium mb-2">邮箱 *</label>
-            <input type="email" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-apple-blue">
+            <input type="email" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-apple-blue shadow-ultra-light">
           </div>
 
           <div>
             <label class="block text-apple-dark font-medium mb-2">留言内容 *</label>
-            <textarea rows="5" required placeholder="请描述您的需求或问题..." class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-apple-blue"></textarea>
+            <textarea rows="5" required placeholder="请描述您的需求或问题..." class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-apple-blue shadow-ultra-light"></textarea>
           </div>
 
-          <button type="submit" class="w-full bg-apple-blue text-white py-4 rounded-lg font-medium hover:bg-apple-blue/90 transition-all text-lg">
+          <button type="submit" class="w-full bg-apple-blue text-white py-4 rounded-2xl font-medium hover:bg-apple-blue/90 transition-all text-lg shadow-ultra-light hover:shadow-md">
             发送消息
           </button>
         </form>
@@ -409,22 +386,16 @@
     mobileMenu.classList.toggle('hidden');
   });
 
-  // 优化背景图片加载 + 高清渲染
+  // 图片高清加载优化
   document.addEventListener('DOMContentLoaded', () => {
-    const bgSections = document.querySelectorAll('.apple-bg-section');
-    bgSections.forEach(section => {
-      // 预加载背景图片，避免加载过程中模糊
-      const bgImageUrl = section.style.backgroundImage.replace(/url\(['"]?(.*?)['"]?\)/, '$1');
-      const img = new Image();
-      img.src = bgImageUrl;
-      // 强制加载高清图片
-      img.onload = () => {
-        section.style.opacity = '1';
-        section.classList.add('bg-loaded', 'image-high-def');
-      };
-      img.onerror = () => {
-        console.warn('背景图片加载失败:', bgImageUrl);
-        section.style.backgroundColor = '#f5f5f7';
+    const productImages = document.querySelectorAll('.product-img');
+    productImages.forEach(img => {
+      const imgUrl = img.src;
+      const newImg = new Image();
+      newImg.src = imgUrl;
+      newImg.onload = () => {
+        img.classList.add('opacity-100');
+        img.style.opacity = '1';
       };
     });
   });
