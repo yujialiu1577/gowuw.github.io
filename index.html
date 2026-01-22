@@ -82,8 +82,35 @@
         object-fit: contain;
         max-height: 60vh;
       }
+      /* 苹果风格轮播卡片样式 */
       .team-card {
-        @apply bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all;
+        @apply bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all;
+      }
+      /* 轮播容器样式 */
+      .team-carousel {
+        @apply relative overflow-hidden w-full max-w-5xl mx-auto;
+      }
+      /* 轮播轨道样式 */
+      .carousel-track {
+        @apply flex transition-transform duration-500 ease-in-out;
+      }
+      /* 轮播项样式 */
+      .carousel-item {
+        @apply min-w-full md:min-w-[50%] lg:min-w-[25%] px-2;
+      }
+      /* 轮播控制按钮 */
+      .carousel-control {
+        @apply absolute top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white shadow-md flex items-center justify-center text-apple-dark transition-all z-10;
+      }
+      /* 轮播指示器 */
+      .carousel-indicators {
+        @apply flex justify-center space-x-2 mt-8;
+      }
+      .indicator-dot {
+        @apply w-3 h-3 rounded-full bg-apple-light/50 hover:bg-apple-light transition-all;
+      }
+      .indicator-dot.active {
+        @apply bg-apple-blue;
       }
       /* 新增：高清图片渲染工具类 */
       .image-high-def {
@@ -110,8 +137,10 @@
         padding: 40px 0 !important;
         background-size: auto 100% !important; /* 移动端优先保证高度铺满，避免拉伸模糊 */
       }
-      .team-grid {
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)) !important;
+      .carousel-control {
+        width: 8px;
+        height: 8px;
+        padding: 8px;
       }
     }
 
@@ -233,51 +262,78 @@
   </div>
 </section>
 
-<!-- ================= 我们的团队板块 ================= -->
+<!-- ================= 我们的团队板块（苹果风格轮播） ================= -->
 <section id="our-team" class="pt-32 pb-20 bg-apple-bg">
   <div class="max-w-7xl mx-auto px-4">
     <h2 class="text-4xl font-bold text-center mb-16 text-apple-dark">专业的团队 打造卓越的产品</h2>
 
-    <!-- 修改：移动端自适应列数，避免4列挤压 -->
-    <div class="grid team-grid grid-cols-1 md:grid-cols-4 gap-4 px-2">
-      <!-- 张伟 - 首席工程师 -->
-      <div class="team-card">
-        <img src="https://picsum.photos/400/500?engineer" alt="张伟" class="w-full h-48 object-cover">
-        <div class="p-3 text-center">
-          <h3 class="text-sm font-bold mb-1">张伟</h3>
-          <p class="text-xs text-apple-light mb-2">首席工程师</p>
-          <p class="text-xs text-gray-600">15年铝制包装研发经验</p>
+    <!-- 苹果风格团队卡片轮播 -->
+    <div class="team-carousel">
+      <!-- 轮播控制按钮 -->
+      <button class="carousel-control left-2" id="prev-btn">
+        <i class="fa fa-chevron-left text-sm"></i>
+      </button>
+      <button class="carousel-control right-2" id="next-btn">
+        <i class="fa fa-chevron-right text-sm"></i>
+      </button>
+
+      <!-- 轮播轨道 -->
+      <div class="carousel-track" id="carousel-track">
+        <!-- 张伟 - 首席工程师 -->
+        <div class="carousel-item">
+          <div class="team-card">
+            <img src="https://picsum.photos/400/500?engineer" alt="张伟" class="w-full h-48 object-cover image-high-def">
+            <div class="p-4 text-center">
+              <h3 class="text-base font-bold mb-1">张伟</h3>
+              <p class="text-sm text-apple-light mb-2">首席工程师</p>
+              <p class="text-xs text-gray-600">15年铝制包装研发经验</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 李娜 - 市场营销经理 -->
+        <div class="carousel-item">
+          <div class="team-card">
+            <img src="https://picsum.photos/400/500?marketing" alt="李娜" class="w-full h-48 object-cover image-high-def">
+            <div class="p-4 text-center">
+              <h3 class="text-base font-bold mb-1">李娜</h3>
+              <p class="text-sm text-apple-light mb-2">市场营销经理</p>
+              <p class="text-xs text-gray-600">8年快消品营销经验</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 王强 - 生产经理 -->
+        <div class="carousel-item">
+          <div class="team-card">
+            <img src="https://picsum.photos/400/500?production" alt="王强" class="w-full h-48 object-cover image-high-def">
+            <div class="p-4 text-center">
+              <h3 class="text-base font-bold mb-1">王强</h3>
+              <p class="text-sm text-apple-light mb-2">生产经理</p>
+              <p class="text-xs text-gray-600">20年生产管理经验</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 赵敏 - 客户服务专员 -->
+        <div class="carousel-item">
+          <div class="team-card">
+            <img src="https://picsum.photos/400/500?service" alt="赵敏" class="w-full h-48 object-cover image-high-def">
+            <div class="p-4 text-center">
+              <h3 class="text-base font-bold mb-1">赵敏</h3>
+              <p class="text-sm text-apple-light mb-2">客户服务专员</p>
+              <p class="text-xs text-gray-600">5年定制服务经验</p>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- 李娜 - 市场营销经理 -->
-      <div class="team-card">
-        <img src="https://picsum.photos/400/500?marketing" alt="李娜" class="w-full h-48 object-cover">
-        <div class="p-3 text-center">
-          <h3 class="text-sm font-bold mb-1">李娜</h3>
-          <p class="text-xs text-apple-light mb-2">市场营销经理</p>
-          <p class="text-xs text-gray-600">8年快消品营销经验</p>
-        </div>
-      </div>
-
-      <!-- 王强 - 生产经理 -->
-      <div class="team-card">
-        <img src="https://picsum.photos/400/500?production" alt="王强" class="w-full h-48 object-cover">
-        <div class="p-3 text-center">
-          <h3 class="text-sm font-bold mb-1">王强</h3>
-          <p class="text-xs text-apple-light mb-2">生产经理</p>
-          <p class="text-xs text-gray-600">20年生产管理经验</p>
-        </div>
-      </div>
-
-      <!-- 赵敏 - 客户服务专员 -->
-      <div class="team-card">
-        <img src="https://picsum.photos/400/500?service" alt="赵敏" class="w-full h-48 object-cover">
-        <div class="p-3 text-center">
-          <h3 class="text-sm font-bold mb-1">赵敏</h3>
-          <p class="text-xs text-apple-light mb-2">客户服务专员</p>
-          <p class="text-xs text-gray-600">5年定制服务经验</p>
-        </div>
+      <!-- 轮播指示器 -->
+      <div class="carousel-indicators" id="carousel-indicators">
+        <button class="indicator-dot active" data-index="0"></button>
+        <button class="indicator-dot" data-index="1"></button>
+        <button class="indicator-dot" data-index="2"></button>
+        <button class="indicator-dot" data-index="3"></button>
       </div>
     </div>
 
@@ -400,7 +456,7 @@
   </div>
 </section>
 
-<!-- 移动端菜单交互脚本 -->
+<!-- 交互脚本（包含轮播逻辑） -->
 <script>
   // 移动端菜单切换
   const mobileMenuBtn = document.getElementById('mobile-menu-btn');
@@ -428,9 +484,78 @@
         section.style.backgroundColor = '#f5f5f7';
       };
     });
+
+    // ========== 团队卡片轮播逻辑 ==========
+    const track = document.getElementById('carousel-track');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const indicators = document.getElementById('carousel-indicators').children;
+    const items = document.querySelectorAll('.carousel-item');
+    let currentIndex = 0;
+    const itemCount = items.length;
+    
+    // 根据屏幕尺寸计算轮播步长
+    function getStep() {
+      if (window.innerWidth >= 1024) return 25; // 大屏：4列，步长25%
+      if (window.innerWidth >= 768) return 50;  // 平板：2列，步长50%
+      return 100;                               // 手机：1列，步长100%
+    }
+
+    // 更新轮播位置
+    function updateCarousel() {
+      const step = getStep();
+      const translateValue = -currentIndex * step + '%';
+      track.style.transform = `translateX(${translateValue})`;
+      
+      // 更新指示器状态
+      Array.from(indicators).forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentIndex);
+      });
+    }
+
+    // 上一张
+    prevBtn.addEventListener('click', () => {
+      currentIndex = (currentIndex > 0) ? currentIndex - 1 : itemCount - 1;
+      updateCarousel();
+    });
+
+    // 下一张
+    nextBtn.addEventListener('click', () => {
+      currentIndex = (currentIndex < itemCount - 1) ? currentIndex + 1 : 0;
+      updateCarousel();
+    });
+
+    // 点击指示器切换
+    Array.from(indicators).forEach((dot, index) => {
+      dot.addEventListener('click', () => {
+        currentIndex = index;
+        updateCarousel();
+      });
+    });
+
+    // 窗口大小变化时重新计算轮播位置
+    window.addEventListener('resize', updateCarousel);
+
+    // 自动轮播（5秒切换一次）
+    let autoPlay = setInterval(() => {
+      currentIndex = (currentIndex < itemCount - 1) ? currentIndex + 1 : 0;
+      updateCarousel();
+    }, 5000);
+
+    // 鼠标悬停时暂停自动轮播
+    const carousel = document.querySelector('.team-carousel');
+    carousel.addEventListener('mouseenter', () => clearInterval(autoPlay));
+    carousel.addEventListener('mouseleave', () => {
+      autoPlay = setInterval(() => {
+        currentIndex = (currentIndex < itemCount - 1) ? currentIndex + 1 : 0;
+        updateCarousel();
+      }, 5000);
+    });
+
+    // 初始化轮播
+    updateCarousel();
   });
 </script>
 
 </body>
 </html>
-
