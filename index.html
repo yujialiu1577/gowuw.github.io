@@ -53,10 +53,22 @@
         color: #0066cc !important;
         font-weight: 500;
       }
+      /* 核心优化：提升背景图片清晰度 */
       .apple-bg-section {
         @apply bg-apple-bg bg-cover bg-center bg-no-repeat relative;
+        min-height: 60vh !important;
+        width: 100% !important;
+        background-attachment: scroll !important;
+        /* 关键：优化图片渲染质量 */
         background-size: cover !important;
         background-position: center center !important;
+        background-repeat: no-repeat !important;
+        /* 提升图片清晰度的核心样式 */
+        image-rendering: -webkit-optimize-contrast !important; /* 针对webkit内核（Chrome/Safari）优化 */
+        image-rendering: crisp-edges !important; /* 保留图片边缘细节 */
+        image-rendering: pixelated !important; /* 像素级清晰渲染 */
+        -webkit-background-size: cover !important; /* 兼容iOS设备 */
+        -webkit-backface-visibility: hidden !important; /* 消除iOS模糊 */
       }
       .apple-product-wrap {
         max-width: 900px;
@@ -70,39 +82,70 @@
         object-fit: contain;
         max-height: 60vh;
       }
-      /* 苹果风格轮播样式 */
-      .carousel-container {
-        @apply relative overflow-hidden w-full max-w-5xl mx-auto;
+      .team-card {
+        @apply bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all;
       }
-      .carousel-track {
-        @apply flex transition-transform duration-500 ease-out;
-      }
-      .carousel-card {
-        @apply min-w-full sm:min-w-[50%] lg:min-w-[25%] px-4;
-      }
-      .carousel-dot {
-        @apply w-3 h-3 rounded-full bg-gray-300 hover:bg-apple-blue/50 transition-all;
-      }
-      .carousel-dot.active {
-        @apply bg-apple-blue;
-      }
-      .carousel-btn {
-        @apply absolute top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white shadow-md flex items-center justify-center text-apple-dark transition-all z-10;
+      /* 新增：高清图片渲染工具类 */
+      .image-high-def {
+        image-rendering: optimizeQuality;
+        -webkit-filter: blur(0);
+        filter: blur(0);
       }
     }
 
+    /* 全局优化：提升所有图片清晰度 */
     body {
       font-family: var(--font-sanfrancisco);
       scroll-behavior: smooth;
       padding-top: 56px;
+      margin: 0;
+      image-rendering: optimizeQuality; /* 全局图片高清渲染 */
+      -webkit-font-smoothing: antialiased; /* 文字抗锯齿，间接提升视觉清晰度 */
     }
 
+    /* 移动端背景优化：保证高度和清晰度 */
     @media (max-width: 768px) {
       .apple-bg-section {
-        background-attachment: scroll !important;
-        min-height: auto !important;
+        min-height: 70vh !important; /* 增加移动端高度，完整显示背景 */
         padding: 40px 0 !important;
+        background-size: auto 100% !important; /* 移动端优先保证高度铺满，避免拉伸模糊 */
       }
+      .team-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)) !important;
+      }
+    }
+
+    /* 大屏设备优化：最大化利用分辨率 */
+    @media (min-width: 1200px) {
+      .apple-bg-section {
+        min-height: 80vh !important;
+        background-size: 100% auto !important; /* 大屏优先宽度铺满，保证细节清晰 */
+      }
+    }
+
+    #mobile-menu {
+      transition: all 0.3s ease;
+    }
+
+    /* 背景图片加载失败备用样式（不影响清晰度） */
+    .apple-bg-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(245, 245, 247, 0.8);
+      z-index: 1;
+      opacity: 0; /* 图片加载成功时隐藏 */
+      transition: opacity 0.3s ease;
+    }
+    .apple-bg-section.bg-loaded::before {
+      opacity: 0;
+    }
+    .apple-bg-section > * {
+      position: relative;
+      z-index: 2;
     }
   </style>
 </head>
@@ -138,8 +181,8 @@
 </nav>
 
 <!-- ================= 首页 Hero ================= -->
-<section id="home" class="relative min-h-screen flex flex-col items-center justify-center text-center pt-20 apple-bg-section"
-  style="background-image: url('/static/image/266.png');"
+<section id="home" class="relative flex flex-col items-center justify-center text-center pt-20 apple-bg-section image-high-def"
+  style="background-image: url('https://i.ibb.co/rG1KcvtM/266.png');"
 >
   <div class="relative z-10 max-w-5xl mx-auto px-6 mb-8">
     <h1 class="text-5xl md:text-6xl font-semibold tracking-tight text-apple-dark mb-4">
@@ -161,8 +204,8 @@
 </section>
 
 <!-- ================= 进一步了解 ================= -->
-<section id="learn-more" class="min-h-[80vh] flex flex-col items-center justify-center text-center py-20 apple-bg-section"
-  style="background-image: url('/static/image/169.png');"
+<section id="learn-more" class="flex flex-col items-center justify-center text-center py-20 apple-bg-section image-high-def"
+  style="background-image: url('https://i.ibb.co/k2GkT07F/169.png');"
 >
   <div class="max-w-4xl mx-auto px-6 mb-12 relative z-10">
     <h2 class="text-4xl md:text-5xl font-semibold text-apple-dark mb-4">
@@ -180,8 +223,8 @@
 </section>
 
 <!-- ================= 选购铝制啤酒罐 ================= -->
-<section id="custom-order" class="pt-32 pb-20 apple-bg-section"
-  style="background-image: url('/static/image/618.png');"
+<section id="custom-order" class="pt-32 pb-20 apple-bg-section image-high-def"
+  style="background-image: url('https://i.ibb.co/nqcShHrw/618.png');"
 >
   <div class="max-w-7xl mx-auto px-4 text-center relative z-10">
     <h2 class="text-4xl font-bold mb-16 text-apple-dark">选购铝制啤酒罐</h2>
@@ -190,99 +233,71 @@
   </div>
 </section>
 
-<!-- ================= 我们的团队板块（苹果风格轮播） ================= -->
+<!-- ================= 我们的团队板块 ================= -->
 <section id="our-team" class="pt-32 pb-20 bg-apple-bg">
   <div class="max-w-7xl mx-auto px-4">
     <h2 class="text-4xl font-bold text-center mb-16 text-apple-dark">专业的团队 打造卓越的产品</h2>
 
-    <!-- 苹果风格团队轮播 -->
-    <div class="carousel-container">
-      <!-- 轮播控制按钮 -->
-      <button id="carousel-prev" class="carousel-btn left-4 md:left-8 hidden md:flex">
-        <i class="fa fa-chevron-left"></i>
-      </button>
-      <button id="carousel-next" class="carousel-btn right-4 md:right-8 hidden md:flex">
-        <i class="fa fa-chevron-right"></i>
-      </button>
-
-      <!-- 轮播轨道 -->
-      <div id="carousel-track" class="carousel-track">
-        <!-- 张伟 - 首席工程师 -->
-        <div class="carousel-card">
-          <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all h-full">
-            <img src="https://picsum.photos/400/500?engineer" alt="张伟" class="w-full h-64 object-cover">
-            <div class="p-6 text-center">
-              <h3 class="text-xl font-bold mb-2">张伟</h3>
-              <p class="text-apple-light mb-4">首席工程师</p>
-              <p class="text-sm text-gray-600">15年铝制包装研发经验，曾主导多个知名啤酒品牌包装升级项目</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- 李娜 - 市场营销经理 -->
-        <div class="carousel-card">
-          <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all h-full">
-            <img src="https://picsum.photos/400/500?marketing" alt="李娜" class="w-full h-64 object-cover">
-            <div class="p-6 text-center">
-              <h3 class="text-xl font-bold mb-2">李娜</h3>
-              <p class="text-apple-light mb-4">市场营销经理</p>
-              <p class="text-sm text-gray-600">8年快消品营销经验，擅长品牌包装策略与市场推广</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- 王强 - 生产经理 -->
-        <div class="carousel-card">
-          <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all h-full">
-            <img src="https://picsum.photos/400/500?production" alt="王强" class="w-full h-64 object-cover">
-            <div class="p-6 text-center">
-              <h3 class="text-xl font-bold mb-2">王强</h3>
-              <p class="text-apple-light mb-4">生产经理</p>
-              <p class="text-sm text-gray-600">20年生产管理经验，精通铝罐生产工艺与质量控制</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- 赵敏 - 客户服务专员 -->
-        <div class="carousel-card">
-          <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all h-full">
-            <img src="https://picsum.photos/400/500?service" alt="赵敏" class="w-full h-64 object-cover">
-            <div class="p-6 text-center">
-              <h3 class="text-xl font-bold mb-2">赵敏</h3>
-              <p class="text-apple-light mb-4">客户服务专员</p>
-              <p class="text-sm text-gray-600">5年定制服务经验，全程跟进客户需求，确保定制效果达标</p>
-            </div>
-          </div>
+    <div class="grid team-grid grid-cols-1 md:grid-cols-4 gap-4 px-2">
+      <!-- 张伟 - 首席工程师 -->
+      <div class="team-card">
+        <img src="https://picsum.photos/400/500?engineer" alt="张伟" class="w-full h-48 object-cover image-high-def">
+        <div class="p-3 text-center">
+          <h3 class="text-sm font-bold mb-1">张伟</h3>
+          <p class="text-xs text-apple-light mb-2">首席工程师</p>
+          <p class="text-xs text-gray-600">15年铝制包装研发经验</p>
         </div>
       </div>
 
-      <!-- 轮播指示器 -->
-      <div class="flex justify-center mt-8 space-x-2">
-        <button class="carousel-dot active" data-index="0"></button>
-        <button class="carousel-dot" data-index="1"></button>
-        <button class="carousel-dot" data-index="2"></button>
-        <button class="carousel-dot" data-index="3"></button>
+      <!-- 李娜 - 市场营销经理 -->
+      <div class="team-card">
+        <img src="https://picsum.photos/400/500?marketing" alt="李娜" class="w-full h-48 object-cover image-high-def">
+        <div class="p-3 text-center">
+          <h3 class="text-sm font-bold mb-1">李娜</h3>
+          <p class="text-xs text-apple-light mb-2">市场营销经理</p>
+          <p class="text-xs text-gray-600">8年快消品营销经验</p>
+        </div>
+      </div>
+
+      <!-- 王强 - 生产经理 -->
+      <div class="team-card">
+        <img src="https://picsum.photos/400/500?production" alt="王强" class="w-full h-48 object-cover image-high-def">
+        <div class="p-3 text-center">
+          <h3 class="text-sm font-bold mb-1">王强</h3>
+          <p class="text-xs text-apple-light mb-2">生产经理</p>
+          <p class="text-xs text-gray-600">20年生产管理经验</p>
+        </div>
+      </div>
+
+      <!-- 赵敏 - 客户服务专员 -->
+      <div class="team-card">
+        <img src="https://picsum.photos/400/500?service" alt="赵敏" class="w-full h-48 object-cover image-high-def">
+        <div class="p-3 text-center">
+          <h3 class="text-sm font-bold mb-1">赵敏</h3>
+          <p class="text-xs text-apple-light mb-2">客户服务专员</p>
+          <p class="text-xs text-gray-600">5年定制服务经验</p>
+        </div>
       </div>
     </div>
 
     <!-- 团队优势 -->
-    <div class="mt-20 bg-white rounded-xl shadow-xl p-8">
-      <h3 class="text-2xl font-semibold mb-6 text-center text-apple-dark">我们的核心优势</h3>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+    <div class="mt-12 bg-white rounded-xl shadow-xl p-6">
+      <h3 class="text-xl font-semibold mb-4 text-center text-apple-dark">我们的核心优势</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
         <div>
-          <i class="fa fa-users text-4xl text-apple-blue mb-4"></i>
-          <h4 class="text-xl font-semibold mb-2">专业团队</h4>
-          <p class="text-apple-light">平均10年以上行业经验，熟悉啤酒包装全流程</p>
+          <i class="fa fa-users text-3xl text-apple-blue mb-3"></i>
+          <h4 class="text-lg font-semibold mb-1">专业团队</h4>
+          <p class="text-sm text-apple-light">平均10年以上行业经验</p>
         </div>
         <div>
-          <i class="fa fa-cogs text-4xl text-apple-blue mb-4"></i>
-          <h4 class="text-xl font-semibold mb-2">先进工艺</h4>
-          <p class="text-apple-light">引进国际领先的生产设备和印刷技术</p>
+          <i class="fa fa-cogs text-3xl text-apple-blue mb-3"></i>
+          <h4 class="text-lg font-semibold mb-1">先进工艺</h4>
+          <p class="text-sm text-apple-light">引进国际领先生产设备</p>
         </div>
         <div>
-          <i class="fa fa-heart text-4xl text-apple-blue mb-4"></i>
-          <h4 class="text-xl font-semibold mb-2">贴心服务</h4>
-          <p class="text-apple-light">一对一专属服务，从设计到交付全程跟进</p>
+          <i class="fa fa-heart text-3xl text-apple-blue mb-3"></i>
+          <h4 class="text-lg font-semibold mb-1">贴心服务</h4>
+          <p class="text-sm text-apple-light">一对一专属定制服务</p>
         </div>
       </div>
     </div>
@@ -384,7 +399,7 @@
   </div>
 </section>
 
-<!-- 轮播和菜单交互脚本 -->
+<!-- 移动端菜单交互脚本 -->
 <script>
   // 移动端菜单切换
   const mobileMenuBtn = document.getElementById('mobile-menu-btn');
@@ -394,88 +409,23 @@
     mobileMenu.classList.toggle('hidden');
   });
 
-  // 苹果风格轮播逻辑
+  // 优化背景图片加载 + 高清渲染
   document.addEventListener('DOMContentLoaded', () => {
-    const track = document.getElementById('carousel-track');
-    const prevBtn = document.getElementById('carousel-prev');
-    const nextBtn = document.getElementById('carousel-next');
-    const dots = document.querySelectorAll('.carousel-dot');
-    const cards = document.querySelectorAll('.carousel-card');
-    let currentIndex = 0;
-    
-    // 根据屏幕尺寸计算每次滚动的宽度比例
-    function getScrollWidth() {
-      if (window.innerWidth >= 1024) return 25; // 大屏：4列，每次25%
-      if (window.innerWidth >= 640) return 50;  // 中屏：2列，每次50%
-      return 100;                               // 小屏：1列，每次100%
-    }
-    
-    // 更新轮播位置
-    function updateCarousel() {
-      const scrollWidth = getScrollWidth();
-      track.style.transform = `translateX(-${currentIndex * scrollWidth}%)`;
-      
-      // 更新指示器状态
-      dots.forEach((dot, index) => {
-        dot.classList.toggle('active', index === currentIndex);
-      });
-    }
-    
-    // 下一张
-    function nextSlide() {
-      const maxIndex = window.innerWidth >= 1024 ? 0 : 
-                      window.innerWidth >= 640 ? 1 : 3;
-      currentIndex = (currentIndex + 1) % (maxIndex + 1);
-      updateCarousel();
-    }
-    
-    // 上一张
-    function prevSlide() {
-      const maxIndex = window.innerWidth >= 1024 ? 0 : 
-                      window.innerWidth >= 640 ? 1 : 3;
-      currentIndex = (currentIndex - 1 + (maxIndex + 1)) % (maxIndex + 1);
-      updateCarousel();
-    }
-    
-    // 绑定按钮事件
-    nextBtn.addEventListener('click', nextSlide);
-    prevBtn.addEventListener('click', prevSlide);
-    
-    // 绑定指示器事件
-    dots.forEach((dot, index) => {
-      dot.addEventListener('click', () => {
-        currentIndex = index;
-        updateCarousel();
-      });
-    });
-    
-    // 响应式调整
-    window.addEventListener('resize', () => {
-      currentIndex = 0;
-      updateCarousel();
-    });
-    
-    // 自动轮播
-    let autoplay = setInterval(nextSlide, 5000);
-    
-    // 鼠标悬停暂停轮播
-    const carouselContainer = document.querySelector('.carousel-container');
-    carouselContainer.addEventListener('mouseenter', () => {
-      clearInterval(autoplay);
-    });
-    
-    // 鼠标离开恢复轮播
-    carouselContainer.addEventListener('mouseleave', () => {
-      autoplay = setInterval(nextSlide, 5000);
-    });
-    
-    // 初始化轮播
-    updateCarousel();
-    
-    // 优化背景图片加载
     const bgSections = document.querySelectorAll('.apple-bg-section');
     bgSections.forEach(section => {
-      section.style.opacity = '1';
+      // 预加载背景图片，避免加载过程中模糊
+      const bgImageUrl = section.style.backgroundImage.replace(/url\(['"]?(.*?)['"]?\)/, '$1');
+      const img = new Image();
+      img.src = bgImageUrl;
+      // 强制加载高清图片
+      img.onload = () => {
+        section.style.opacity = '1';
+        section.classList.add('bg-loaded', 'image-high-def');
+      };
+      img.onerror = () => {
+        console.warn('背景图片加载失败:', bgImageUrl);
+        section.style.backgroundColor = '#f5f5f7';
+      };
     });
   });
 </script>
