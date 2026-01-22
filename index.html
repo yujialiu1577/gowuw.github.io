@@ -53,8 +53,12 @@
         color: #0066cc !important;
         font-weight: 500;
       }
+      /* 优化背景图片自适应样式 */
       .apple-bg-section {
         @apply bg-apple-bg bg-cover bg-center bg-no-repeat relative;
+        /* 确保背景图片在所有设备上都能覆盖容器 */
+        background-size: cover !important;
+        background-position: center center !important;
       }
       .apple-product-wrap {
         max-width: 900px;
@@ -68,11 +72,31 @@
         object-fit: contain;
         max-height: 60vh;
       }
+      /* 移动端团队卡片样式优化 */
+      .team-card {
+        @apply bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all;
+      }
     }
 
     body {
       font-family: var(--font-sanfrancisco);
       scroll-behavior: smooth;
+      /* 防止内容被固定导航栏遮挡 */
+      padding-top: 56px;
+    }
+    
+    /* 解决小屏幕下背景图片拉伸问题 */
+    @media (max-width: 768px) {
+      .apple-bg-section {
+        background-attachment: scroll !important;
+        min-height: auto !important;
+        padding: 40px 0 !important;
+      }
+    }
+    
+    /* 移动端菜单交互 */
+    #mobile-menu {
+      transition: all 0.3s ease;
     }
   </style>
 </head>
@@ -165,66 +189,67 @@
   <div class="max-w-7xl mx-auto px-4">
     <h2 class="text-4xl font-bold text-center mb-16 text-apple-dark">专业的团队 打造卓越的产品</h2>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+    <!-- 修改：所有屏幕尺寸下都是4列布局（手机端四人并排） -->
+    <div class="grid grid-cols-4 gap-4 px-2">
       <!-- 张伟 - 首席工程师 -->
-      <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all">
-        <img src="https://picsum.photos/400/500?engineer" alt="张伟" class="w-full h-80 object-cover">
-        <div class="p-6 text-center">
-          <h3 class="text-xl font-bold mb-2">张伟</h3>
-          <p class="text-apple-light mb-4">首席工程师</p>
-          <p class="text-sm text-gray-600">15年铝制包装研发经验，曾主导多个知名啤酒品牌包装升级项目</p>
+      <div class="team-card">
+        <img src="https://picsum.photos/400/500?engineer" alt="张伟" class="w-full h-48 object-cover">
+        <div class="p-3 text-center">
+          <h3 class="text-sm font-bold mb-1">张伟</h3>
+          <p class="text-xs text-apple-light mb-2">首席工程师</p>
+          <p class="text-xs text-gray-600">15年铝制包装研发经验</p>
         </div>
       </div>
 
       <!-- 李娜 - 市场营销经理 -->
-      <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all">
-        <img src="https://picsum.photos/400/500?marketing" alt="李娜" class="w-full h-80 object-cover">
-        <div class="p-6 text-center">
-          <h3 class="text-xl font-bold mb-2">李娜</h3>
-          <p class="text-apple-light mb-4">市场营销经理</p>
-          <p class="text-sm text-gray-600">8年快消品营销经验，擅长品牌包装策略与市场推广</p>
+      <div class="team-card">
+        <img src="https://picsum.photos/400/500?marketing" alt="李娜" class="w-full h-48 object-cover">
+        <div class="p-3 text-center">
+          <h3 class="text-sm font-bold mb-1">李娜</h3>
+          <p class="text-xs text-apple-light mb-2">市场营销经理</p>
+          <p class="text-xs text-gray-600">8年快消品营销经验</p>
         </div>
       </div>
 
       <!-- 王强 - 生产经理 -->
-      <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all">
-        <img src="https://picsum.photos/400/500?production" alt="王强" class="w-full h-80 object-cover">
-        <div class="p-6 text-center">
-          <h3 class="text-xl font-bold mb-2">王强</h3>
-          <p class="text-apple-light mb-4">生产经理</p>
-          <p class="text-sm text-gray-600">20年生产管理经验，精通铝罐生产工艺与质量控制</p>
+      <div class="team-card">
+        <img src="https://picsum.photos/400/500?production" alt="王强" class="w-full h-48 object-cover">
+        <div class="p-3 text-center">
+          <h3 class="text-sm font-bold mb-1">王强</h3>
+          <p class="text-xs text-apple-light mb-2">生产经理</p>
+          <p class="text-xs text-gray-600">20年生产管理经验</p>
         </div>
       </div>
 
       <!-- 赵敏 - 客户服务专员 -->
-      <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all">
-        <img src="https://picsum.photos/400/500?service" alt="赵敏" class="w-full h-80 object-cover">
-        <div class="p-6 text-center">
-          <h3 class="text-xl font-bold mb-2">赵敏</h3>
-          <p class="text-apple-light mb-4">客户服务专员</p>
-          <p class="text-sm text-gray-600">5年定制服务经验，全程跟进客户需求，确保定制效果达标</p>
+      <div class="team-card">
+        <img src="https://picsum.photos/400/500?service" alt="赵敏" class="w-full h-48 object-cover">
+        <div class="p-3 text-center">
+          <h3 class="text-sm font-bold mb-1">赵敏</h3>
+          <p class="text-xs text-apple-light mb-2">客户服务专员</p>
+          <p class="text-xs text-gray-600">5年定制服务经验</p>
         </div>
       </div>
     </div>
 
     <!-- 团队优势 -->
-    <div class="mt-20 bg-white rounded-xl shadow-xl p-8">
-      <h3 class="text-2xl font-semibold mb-6 text-center text-apple-dark">我们的核心优势</h3>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+    <div class="mt-12 bg-white rounded-xl shadow-xl p-6">
+      <h3 class="text-xl font-semibold mb-4 text-center text-apple-dark">我们的核心优势</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
         <div>
-          <i class="fa fa-users text-4xl text-apple-blue mb-4"></i>
-          <h4 class="text-xl font-semibold mb-2">专业团队</h4>
-          <p class="text-apple-light">平均10年以上行业经验，熟悉啤酒包装全流程</p>
+          <i class="fa fa-users text-3xl text-apple-blue mb-3"></i>
+          <h4 class="text-lg font-semibold mb-1">专业团队</h4>
+          <p class="text-sm text-apple-light">平均10年以上行业经验</p>
         </div>
         <div>
-          <i class="fa fa-cogs text-4xl text-apple-blue mb-4"></i>
-          <h4 class="text-xl font-semibold mb-2">先进工艺</h4>
-          <p class="text-apple-light">引进国际领先的生产设备和印刷技术</p>
+          <i class="fa fa-cogs text-3xl text-apple-blue mb-3"></i>
+          <h4 class="text-lg font-semibold mb-1">先进工艺</h4>
+          <p class="text-sm text-apple-light">引进国际领先生产设备</p>
         </div>
         <div>
-          <i class="fa fa-heart text-4xl text-apple-blue mb-4"></i>
-          <h4 class="text-xl font-semibold mb-2">贴心服务</h4>
-          <p class="text-apple-light">一对一专属服务，从设计到交付全程跟进</p>
+          <i class="fa fa-heart text-3xl text-apple-blue mb-3"></i>
+          <h4 class="text-lg font-semibold mb-1">贴心服务</h4>
+          <p class="text-sm text-apple-light">一对一专属定制服务</p>
         </div>
       </div>
     </div>
@@ -292,10 +317,9 @@
         </div>
       </div>
 
-            <!-- 联系表单 -->
+      <!-- 联系表单 -->
       <div class="bg-white rounded-xl shadow-xl p-8">
         <h3 class="text-2xl font-semibold mb-8 text-apple-dark">发送消息</h3>
-
 
         <form id="contact-form" class="space-y-6">
           <div>
@@ -303,24 +327,20 @@
             <input type="text" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-apple-blue">
           </div>
 
-
           <div>
             <label class="block text-apple-dark font-medium mb-2">电话 *</label>
             <input type="tel" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-apple-blue">
           </div>
-
 
           <div>
             <label class="block text-apple-dark font-medium mb-2">邮箱 *</label>
             <input type="email" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-apple-blue">
           </div>
 
-
           <div>
             <label class="block text-apple-dark font-medium mb-2">留言内容 *</label>
             <textarea rows="5" required placeholder="请描述您的需求或问题..." class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-apple-blue"></textarea>
           </div>
-
 
           <button type="submit" class="w-full bg-apple-blue text-white py-4 rounded-lg font-medium hover:bg-apple-blue/90 transition-all text-lg">
             发送消息
@@ -331,4 +351,25 @@
   </div>
 </section>
 
-          <button type="submit" class="w-full bg-apple-blue text-white py-4 rounded-lg font-medium hover:bg-app
+<!-- 移动端菜单交互脚本 -->
+<script>
+  // 移动端菜单切换
+  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  
+  mobileMenuBtn.addEventListener('click', () => {
+    mobileMenu.classList.toggle('hidden');
+  });
+
+  // 优化背景图片加载
+  document.addEventListener('DOMContentLoaded', () => {
+    const bgSections = document.querySelectorAll('.apple-bg-section');
+    bgSections.forEach(section => {
+      // 强制重绘确保背景图片正确显示
+      section.style.opacity = '1';
+    });
+  });
+</script>
+
+</body>
+</html>
